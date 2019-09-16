@@ -1,4 +1,5 @@
 const Event = require("../models/EventsModel");
+const moment = require("moment");
 
 module.exports = {
     async store(req,res){
@@ -29,9 +30,16 @@ module.exports = {
         const { guest } = req.headers;
         const { events } = req.headers;
 
+        let today = moment();
+
+        
         const event = await Event.findById(events);
         if(event.guests.includes(guest)){
             return res.status(409).json({ message:"Voce ja esta convidado para esse evento!" });
+        }
+
+        if(today > moment(event.datetime)){
+            return res.status(403).json({ message:"evento ja realizado!" });
         }
 
         event.guests.push(guest);
