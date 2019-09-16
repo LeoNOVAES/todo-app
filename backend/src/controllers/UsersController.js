@@ -1,7 +1,7 @@
 const User = require("../models/UsersModel");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const { secret } = require("../config/key.json");
+const { secret } = require("../config/key.json.js");
 
 module.exports = {
     async store(req,res){
@@ -40,17 +40,25 @@ module.exports = {
     },
 
     async autentic(req,res){
-        const {email, password} = req.body;
-        password = crypto.createHash("md5").update(data.password).digest("hex");
+        try{
+            const {email} = req.body;
+            let { password } = req.body;
 
-        const user = await User.findOne({ email:email, password:password });
-        if(!user) return res.status(403).json({message:"Senha ou Email incorretos!"});
+            password = crypto.createHash("md5").update(password).digest("hex");
+            
+            const user = await User.findOne({ email:email, password:password });
+            if(!user) return res.status(403).json({message:"Senha ou Email incorretos!"});
 
-        const token = jwt.sign({"id":user.id}, secret,{
-            expiresIn:86400
-        });
+            const token = jwt.sign({"id":user.id}, secret,{
+                expiresIn:86400
+            });
 
-        return res.status(202).json({ user, token });
+            return res.status(202).json({ user, token });
+
+        }catch(e){
+            console.log(e);
+            return res.status(400).json({message:"Erro Inesperado!"});
+        }
     },
 
     async indexAll(req,res){
@@ -58,7 +66,7 @@ module.exports = {
         return res.status(200).json({ users })
     },
 
-    async indexOne(req,res){
+    async index(req,res){
         const {id} = req.headers;
         const user = await User.findOne(id);
 
@@ -66,17 +74,19 @@ module.exports = {
     },
 
     async update(req,res) {
-      
+        const { id } = req.headers;
+        const user = await User.update({_id:id}, req.body);
+        return res.json({ user });
     },
 
     async delete(req,res) {
         try{
 
             const { id } = req.headers;
-            await Table.findOneAndRemove({ _id:id});
+            await User.findOneAndRemove({ _id:id});
             return res.status(200).json({message:"usuário deletado com sucesso"});
 
-        }catch($e){
+        }catch(e){
             return res.status(400).json("erro inesperado");
         }
     }

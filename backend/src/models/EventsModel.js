@@ -9,6 +9,15 @@ const Events = new Schema({
         type:String,
         required:true
     },
+    organizer:{
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
+        required:true
+    },
+    limit:{
+        type:Number,
+        required:true
+    },
     datetime:{
         type:Date,
         required:true
