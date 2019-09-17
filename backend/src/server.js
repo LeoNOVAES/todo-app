@@ -5,7 +5,10 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-mongoose.connect('mongodb://db:27017/events', {
+//mongoose.connect('mongodb://db:27017/events', {
+  //  useNewUrlParser: true
+//});
+mongoose.connect('mongodb://localhost:27017/events', {
     useNewUrlParser: true
 });
 
