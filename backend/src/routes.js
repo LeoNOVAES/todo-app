@@ -19,6 +19,8 @@ router.get('/api/accept', EventsController.acceptInvite);
 router.get('/api/events', EventsController.indexAll);
 router.get('/api/event', EventsController.index);
 router.get('/api/events/organizer', EventsController.indexOrganizer);
+router.get('/api/events/guest', EventsController.getEventByGuest);
+router.get('/api/cancel/invite', EventsController.cancelInvite);
 router.put('/api/event', EventsController.update);
 router.delete("/api/event", EventsController.delete);
 

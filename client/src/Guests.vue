@@ -128,9 +128,7 @@ export default{
        },
 
       async acceptInvite(user,token){
-          console.log(user)
-          console.log(token)
-
+          
           const req = await fetch("http://localhost:3000/api/accept",{
               method:'GET',
               headers:{

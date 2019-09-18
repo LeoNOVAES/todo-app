@@ -51,6 +51,28 @@ module.exports = {
         return res.status(200).json({ state:"aceito",message:`O evento começara dia ${event.start}` });
     },
 
+    async cancelInvite(req,res){
+        try{
+            const { guest } = req.headers;
+            const { events } = req.headers;
+
+            const event = await Event.findById(events);
+            if(event.guests.includes(guest)){
+                
+                event.guests = event.guests.filter((e)=>{
+                    return e != guest;
+                });
+                event.save();
+                return res.status(200).json({ state:"aceito",message:`Nao esta mais participando do evento!` });
+            }else{
+                return res.status(403).json({ message:`Voce nao e convidado!` });
+            }
+        }catch(e){
+            console.log(e)
+        }
+       
+    },
+
     async index(req,res){
         const { id } = req.headers;
         const event = await Event.findById(id);
@@ -66,6 +88,18 @@ module.exports = {
         const { id } = req.headers;
         const events = await Event.find({ organizer:id });
         return res.status(200).json({ events });
+    },
+
+    async getEventByGuest(req,res){
+
+        const { user } = req.headers;
+        const event = await Event.find({
+            $and:[
+                { guests:{ $in:user } }
+            ]
+        });
+
+        return res.status(200).json({ event });
     },
 
     async update(req,res){

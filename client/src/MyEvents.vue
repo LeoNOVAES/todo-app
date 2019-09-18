@@ -28,7 +28,7 @@
                 <p>Ainda nao existem eventos cadastrados :(</p>
             </div>
             <div v-else class="row" >
-                <div class="col-4 myEventsCard" v-for="(event, key) in events.event" :key="key">
+                <div class="col-4 myEventsCard" v-for="(event, key) in events" :key="key">
                     <b-card      bg-variant="dark"  text-variant="white" class="text">
                         <div class="headerCard">
                             <p>nome: {{ event.name }}</p>
@@ -41,11 +41,11 @@
                         <b-card-text>Inicio: {{ formatDate(event.start) }}</b-card-text>
                         <b-card-text>Fim: {{ formatDate(event.end) }}</b-card-text>
                         <b-card-text>Limite de convidados: {{ event.limit }}</b-card-text>
-                        <b-card-text>Lista de convidados:</b-card-text>
-                        <b-card-text v-for="(guest,key) in events.guests" :key="key">{{ key+1 }} -> {{ guest.data.users[0].name}}</b-card-text>
                         <b-button class="btn btn-warning" style="color:#ffffff; margin-right:10px">Editar</b-button>
                         <b-button @click="deleteEvent(event._id)" style="background-color:#DF4723;">Excluir</b-button>
+                        <InfoEvents :idEvent="event._id" />
                     </b-card>
+
                 </div>
             </div>
       </div>
@@ -55,6 +55,7 @@
 <script>
 import Header from "@/components/Header";
 import Form from "@/components/FormEvents";
+import InfoEvents from "@/components/InfoEvents";
 import moment from "moment";
 import api from "@/services/api";
 
@@ -62,15 +63,13 @@ export default{
     components:{
         Header,
         Form,
-        api
+        api,
+        InfoEvents
     },
     data(){
         return{
             activeForm:0,
-               events:{
-                   event:[],
-                   guests:[]
-               }
+               events:[]
         }
         
     },
@@ -87,18 +86,7 @@ export default{
                 }
             });
         
-            this.$data.events.event = response.data.events;
-        },
-
-        async getGuests(id){
-            const response = await api.get("/guests",{
-                headers:{
-                    Authorization:localStorage.getItem("token_event"),
-                    id:id
-                }
-            });
-            return response.data.users;
-
+            this.$data.events = response.data.events;
         },
 
         formatDate(e){
