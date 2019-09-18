@@ -6,6 +6,31 @@
     .invitationEventsCard{
         padding-bottom:1%;
     }
+
+    .footerCard{
+        padding:10px
+    }
+
+    .footerCard button{
+        margin-right:10px
+    }
+    
+    .headerCard{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between
+        
+    }
+
+     .footerCard{
+        display:flex;
+        flex-direction: row;
+        margin:15px
+    }
+
+    .footerCard button{
+        margin-left:10px;
+    }
 </style>
 <template>
     <div>  
@@ -16,11 +41,25 @@
                 <p>Ainda nao existem convites :(</p>
             </div>  
           <div class="row">
-              <div class="col-4 invitationEventsCard" v-for="(event,key) in events" :key="key">
-                  <b-card bg-variant="light" :header="event.name" text-variant="dark" class="text">
-                      <p> endereco - {{ event.local }} </p>
-                  </b-card>
-                  <button @click="recuseInvite(event._id)" class="btn btn-primary">Desconfirmar</button>
+              <div class="col-sm-4 invitationEventsCard" v-for="(event,key) in events" :key="key">
+                    <div class="card">
+                        <div class="card-header headerCard">
+                            <p style="font-weight:bolder; font-size:150%">{{ event.name }}</p>
+                            <p v-if="state(event.end, event.start)" class="bg-success text-light" style="padding:5px; border-radius:7px">Aberto</p>
+                            <p v-else class="bg-danger text-light" style="padding:5px; border-radius:7px">Fechado</p>
+                        </div>
+                        <div class="card-body">
+                            <p> <b>Endereço</b>: {{ event.local }} </p>
+                            <p> <b>Limite</b>: {{ event.limit }} </p>
+                            <p> <b>Inicio</b>: {{ formatDate(event.start) }} </p>
+                            <p> <b>Final</b>: {{ formatDate(event.end) }} </p>
+                            <p> <b>Convite</b>: {{ `http://localhost:3000/guests/${event._id}` }} </p>
+                        </div>
+                        <div class="footerCard">
+                            <InfoEvent :idEvent="event._id"/>
+                            <button @click="recuseInvite(event._id)" class="btn btn-danger">Desconfirmar</button>
+                        </div>
+                    </div>
               </div>
           </div>
     </div>
@@ -31,10 +70,12 @@
 import Header from "@/components/Header";
 import api from "@/services/api";
 import moment from "moment";
+import InfoEvent from "@/components/InfoEvents";
 
 export default{
     components:{
-        Header
+        Header,
+        InfoEvent
     },
     data(){
         return{
@@ -90,6 +131,18 @@ export default{
                         });
                 }
             }
+        },
+        state(end, start){
+            const today = moment();
+            if(moment(end) >= today){
+                return 1;
+            }else{
+                return 0;
+            }
+        },
+        formatDate(e){
+           const date = moment.utc(e);
+           return date.format('DD/MM/YYYY HH:mm:ss');
         },
         async recuseInvite(id){
             const response = await api.get("/cancel/invite",{

@@ -28,7 +28,7 @@ module.exports = {
         const { id } = req.headers;
         const { guests } = await Event.findById(id);
         const users = await User.find({ _id:guests })
-        return res.status(200).json({ users });
+        res.status(200).json({ users });
     },
 
     async acceptInvite(req,res){
@@ -38,13 +38,16 @@ module.exports = {
         let today = moment();
 
         const event = await Event.findById(events);
+
+        if(guest == event.organizer) return res.status(409).json({ message:"Você é organizador desse evento!" });
+
         if(event.guests.includes(guest)){
-            return res.status(409).json({ message:"Voce ja esta convidado para esse evento!" });
+            return res.status(409).json({ message:"Você já esta convidado para esse evento!" });
         }
 
-        if(today > moment(event.end)) return res.status(403).json({ message:"evento ja realizado!" });
+        if(today > moment(event.end)) return res.status(403).json({ message:"evento já realizado!" });
         
-        if(event.guests.length == event.limit) return res.status(403).json({ message:`O evento atingiu seu limite maximo` });    
+        if(event.guests.length == event.limit) return res.status(403).json({ message:`O evento atingiu seu limite máximo` });    
         
         event.guests.push(guest);
         event.save();
@@ -63,9 +66,9 @@ module.exports = {
                     return e != guest;
                 });
                 event.save();
-                return res.status(200).json({ state:"aceito",message:`Nao esta mais participando do evento!` });
+                return res.status(200).json({ state:"aceito",message:`Não está mais participando do evento!` });
             }else{
-                return res.status(403).json({ message:`Voce nao e convidado!` });
+                return res.status(403).json({ message:`Você não foi convidado!` });
             }
         }catch(e){
             console.log(e)

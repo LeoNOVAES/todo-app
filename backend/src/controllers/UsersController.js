@@ -70,7 +70,7 @@ module.exports = {
         const {id} = req.headers;
         const user = await User.findById(id);
 
-        return res.status(200).json({ user });
+        res.status(200).json({ user });
     },
 
     async update(req,res) {

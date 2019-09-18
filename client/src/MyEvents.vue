@@ -12,6 +12,15 @@
         justify-content: space-between
         
     }
+    .footerCard{
+        display:flex;
+        flex-direction: row;
+        margin:15px
+    }
+
+    .footerCard button{
+        margin-left:10px;
+    }
 </style>
 <template>
     <div>
@@ -28,24 +37,26 @@
                 <p>Ainda nao existem eventos cadastrados :(</p>
             </div>
             <div v-else class="row" >
-                <div class="col-4 myEventsCard" v-for="(event, key) in events" :key="key">
-                    <b-card      bg-variant="dark"  text-variant="white" class="text">
-                        <div class="headerCard">
-                            <p>nome: {{ event.name }}</p>
-                            <p v-if="state(event.end, event.start)" class="bg-success" style="padding:5px; border-radius:7px">Aberto</p>
-                            <p v-else class="bg-danger" style="padding:5px; border-radius:7px">Fechado</p>  
+                <div class="col-sm-4 myEventsCard" v-for="(event, key) in events" :key="key">
+                    <div class="card text-white bg-dark">
+                        <div class="card-header headerCard">
+                            <p style="font-weight:bolder; font-size:150%">{{ event.name }}</p>
+                            <p v-if="state(event.end, event.start)" class="bg-success text-light" style="padding:5px; border-radius:7px">Aberto</p>
+                            <p v-else class="bg-danger text-light" style="padding:5px; border-radius:7px">Fechado</p>
                         </div>
-                        <b-card-text>Endereco: {{ event.local }}</b-card-text>
-                        <b-card-text v-if="state(event.end, event.start)">Convidar: http://localhost:8080/#/guests/?e={{ event._id }}</b-card-text>
-                        <b-card-text v-else>Convidar: ############################################</b-card-text>
-                        <b-card-text>Inicio: {{ formatDate(event.start) }}</b-card-text>
-                        <b-card-text>Fim: {{ formatDate(event.end) }}</b-card-text>
-                        <b-card-text>Limite de convidados: {{ event.limit }}</b-card-text>
-                        <b-button class="btn btn-warning" style="color:#ffffff; margin-right:10px">Editar</b-button>
-                        <b-button @click="deleteEvent(event._id)" style="background-color:#DF4723;">Excluir</b-button>
-                        <InfoEvents :idEvent="event._id" />
-                    </b-card>
-
+                        <div class="card-body">
+                            <p> <b>Endereço</b>: {{ event.local }} </p>
+                            <p> <b>Limite</b>: {{ event.limit }} </p>
+                            <p> <b>Inicio</b>: {{ formatDate(event.start) }} </p>
+                            <p> <b>Final</b>: {{ formatDate(event.end) }} </p>
+                            <p> <b>Convite</b>: {{ `http://localhost:3000/guests/${event._id}` }} </p>
+                        </div>
+                        <div class="footerCard">
+                            <InfoEvent :idEvent="event._id"/>
+                            <EditEvent :idEvent="event._id"/>
+                            <button  class="btn btn-danger">Excluir</button>
+                        </div>
+                    </div>
                 </div>
             </div>
       </div>
@@ -55,7 +66,8 @@
 <script>
 import Header from "@/components/Header";
 import Form from "@/components/FormEvents";
-import InfoEvents from "@/components/InfoEvents";
+import InfoEvent from "@/components/InfoEvents";
+import EditEvent from "@/components/EditEvents";
 import moment from "moment";
 import api from "@/services/api";
 
@@ -64,7 +76,8 @@ export default{
         Header,
         Form,
         api,
-        InfoEvents
+        InfoEvent,
+        EditEvent
     },
     data(){
         return{
@@ -85,7 +98,7 @@ export default{
                     id:localStorage.getItem("id")
                 }
             });
-        
+
             this.$data.events = response.data.events;
         },
 

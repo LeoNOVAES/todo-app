@@ -93,7 +93,7 @@ export default{
 
             this.$swal({
                 title:`Parabéns`,
-                text:`esse e o link para convidados http://localhost:8080/#/guests/?e=${response.event._id}`,
+                text:`esse e o link para convidados http://localhost:8080/#/guests/${response.event._id}`,
                 type: 'success',
                 confirmButtonColor: '#28a745'
             }).then(()=>{

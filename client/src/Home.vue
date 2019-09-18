@@ -5,7 +5,7 @@
       <div class="container">
           
           <div class="row dash">
-                <div class="col-6">
+                <div class="col-sm-6">
                    <div class="card text-white bg-dark mb-3 myEvent" style="max-width: 40rem;">
                         <div class="card-body">
                             <h1 class="card-title">Crie seu Evento</h1>
@@ -16,7 +16,7 @@
                         </div>
                     </div> 
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     <div class="card text-white  mb-3 myEvent" style="max-width: 40rem;">
                         <div class="card-body">
                             <h1 class="card-title">Eventos que participarei</h1>
