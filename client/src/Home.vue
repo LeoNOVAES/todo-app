@@ -1,28 +1,4 @@
-<style scoped>
-    .body{
-        position:absolute;
-        background-color: #e9e9e9;
-        width:100%;
-        height:100%
-    }
 
-    .dash{
-        padding-top:10%;
-    }
-
-    .myEvent{
-        padding:30px;
-        background-color:#DF4723;
-        height:130%;
-        border-radius:20px
-    }
-
-    .myEvent p{
-        font-size: 20pt
-    }
-
-    
-</style>
 <template>
   <div class="body">
       <Header/>
@@ -67,4 +43,28 @@ export default{
 }
 
 </script>
-  
+ <style >
+    .body{
+        position:absolute;
+        background-color: #e9e9e9;
+        width:100%;
+        height:100%;
+    }
+
+    .dash{
+        padding-top:10%;
+    }
+
+    .myEvent{
+        padding:30px;
+        background-color:#DF4723;
+        height:130%;
+        border-radius:20px
+    }
+
+    .myEvent p{
+        font-size: 20pt
+    }
+
+    
+</style> 

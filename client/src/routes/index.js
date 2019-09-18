@@ -5,9 +5,10 @@ const Index = () => import("@/Index");
 const Home = () => import("@/Home");
 const MyEvents = () => import("@/MyEvents");
 const InvitationEvents = () => import("@/InvitationEvents");
+const Guests = () => import("@/Guests");
 
 Vue.use(Router);
-let token = localStorage.getItem("token");
+let token = localStorage.getItem("token_event");
 
 let router = new Router({
     routes:[       
@@ -43,6 +44,11 @@ let router = new Router({
             },
             component:InvitationEvents           
         },
+        {
+            path: "/guests/:event",
+            name: "Guests",
+            component: token ? InvitationEvents : Guests
+        }
     ]
 });
 

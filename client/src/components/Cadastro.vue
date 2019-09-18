@@ -95,9 +95,9 @@ export default{
        } 
    },
    methods:{
-       async handlerRegister(){
+       async handlerRegister(e){
            try{
-               
+                e.preventDefault();
                 if(!this.$data.form.password || !this.$data.form.email || !this.$data.form.phone || !this.$data.form.name){
                     return this.$data.validation = 1;
                 } 
@@ -121,14 +121,15 @@ export default{
            }
        },
 
-       async handlerLogin(){
+       async handlerLogin(e){
+            e.preventDefault();
              const data = {
                 email:this.$data.form.email,
                 password:this.$data.form.password
             }
     
             const response = await api.post("/auth", data);
-            localStorage.setItem("token", response.data.token)
+            localStorage.setItem("token_event", response.data.token)
             localStorage.setItem("id", response.data.user._id);
             localStorage.setItem("nome", response.data.user.name);
             window.location.reload(true);

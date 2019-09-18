@@ -18,7 +18,11 @@ const Events = new Schema({
         type:Number,
         required:true
     },
-    datetime:{
+    start:{
+        type:Date,
+        required:true
+    },
+    end:{
         type:Date,
         required:true
     },

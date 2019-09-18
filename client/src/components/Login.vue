@@ -88,13 +88,12 @@ export default{
    },
    methods:{
        async handlerLogin(){
-            
            if(!this.$data.form.password || !this.$data.form.email) return this.$data.validation = 1;
             
             try{
                 const response = await api.post("/auth",this.$data.form);
         
-                localStorage.setItem("token",response.data.token)
+                localStorage.setItem("token_event",response.data.token)
                 localStorage.setItem("id", response.data.user._id);
                 localStorage.setItem("nome", response.data.user.name);
                 window.location.reload(true);

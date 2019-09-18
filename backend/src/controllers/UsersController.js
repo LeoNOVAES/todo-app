@@ -68,7 +68,7 @@ module.exports = {
 
     async index(req,res){
         const {id} = req.headers;
-        const user = await User.findOne(id);
+        const user = await User.findById(id);
 
         return res.status(200).json({ user });
     },

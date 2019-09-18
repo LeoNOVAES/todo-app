@@ -11,7 +11,7 @@
     <div>  
     <Header/>
     <div class="container invitationEvents">
-        <h4 style="padding-bottom:3%" >Eventos que irei</h4>
+        <h4 style="padding-bottom:3%" >Convites</h4>
           <div class="row">
               <div class="col-4 invitationEventsCard">
                   <b-card bg-variant="light" header="light" text-variant="dark" class="text">
@@ -29,6 +29,11 @@ import Header from "@/components/Header";
 export default{
     components:{
         Header
+    },
+    methods:{
+        async getEvents(){
+            
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 const Event = require("../models/EventsModel");
+const User = require("../models/UsersModel");
 const moment = require("moment");
 
 module.exports = {
@@ -7,13 +8,14 @@ module.exports = {
            const data = req.body;
            
            const today = moment();
-           if(today > moment(data.datetime)) return res.status(403).json({message:"Data invalida!"}); 
+           if(today > moment(data.start)) return res.status(403).json({message:"Data invalida!"}); 
+           if(moment(data.start) > moment(data.end)) return res.status(403).json({message:"Data invalida!"});
 
            const exists = await Event.find({ name:data.name });
            if(exists.length > 0) return res.status(409).json({ message:"Evento ja existe!" });
           
            const event = await Event.create(data);
-           return res.status(200).json({ event, link:`/guests/${event._id}` });
+           return res.status(200).json({ event});
 
         }catch(e){
             console.log(e);
@@ -25,7 +27,8 @@ module.exports = {
 
         const { id } = req.headers;
         const { guests } = await Event.findById(id);
-        return res.status(200).json({ guests });
+        const users = await User.find({ _id:guests })
+        return res.status(200).json({ users });
     },
 
     async acceptInvite(req,res){
@@ -39,13 +42,13 @@ module.exports = {
             return res.status(409).json({ message:"Voce ja esta convidado para esse evento!" });
         }
 
-        if(today > moment(event.datetime)) return res.status(403).json({ message:"evento ja realizado!" });
+        if(today > moment(event.end)) return res.status(403).json({ message:"evento ja realizado!" });
         
         if(event.guests.length == event.limit) return res.status(403).json({ message:`O evento atingiu seu limite maximo` });    
         
         event.guests.push(guest);
         event.save();
-        return res.status(200).json({ message:`O evento começara dia ${event.datetime}` });
+        return res.status(200).json({ state:"aceito",message:`O evento começara dia ${event.start}` });
     },
 
     async index(req,res){
@@ -56,6 +59,12 @@ module.exports = {
 
     async indexAll(req,res){
         const events = await Event.find();
+        return res.status(200).json({ events });
+    },
+
+    async indexOrganizer(req,res){
+        const { id } = req.headers;
+        const events = await Event.find({ organizer:id });
         return res.status(200).json({ events });
     },
 
