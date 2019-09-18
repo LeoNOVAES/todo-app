@@ -19,8 +19,8 @@
                 <template v-if="id" v-slot:button-content>
                     <em>{{name}}</em>
                 </template>
-                <b-dropdown-item  href="#">Perfil</b-dropdown-item>
-                <b-dropdown-item  @click="handlerLogoff">Logoff</b-dropdown-item>
+               <EditProfile />
+                <b-dropdown-item  @click="handlerLogoff">Sair</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
             </b-collapse>
@@ -31,7 +31,11 @@
 </template>
 
 <script>
+import EditProfile from "@/components/EditProfile";
 export default{
+    components:{
+        EditProfile
+    },
     data(){
         return{
             name:localStorage.getItem("nome"),

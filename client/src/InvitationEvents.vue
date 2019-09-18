@@ -44,7 +44,7 @@
               <div class="col-sm-4 invitationEventsCard" v-for="(event,key) in events" :key="key">
                     <div class="card">
                         <div class="card-header headerCard">
-                            <p style="font-weight:bolder; font-size:150%">{{ event.name }}</p>
+                            <p style="font-weight:bolder; font-size:150%;  width: 10em; word-wrap: break-word;">{{ event.name }}</p>
                             <p v-if="state(event.end, event.start)" class="bg-success text-light" style="padding:5px; border-radius:7px">Aberto</p>
                             <p v-else class="bg-danger text-light" style="padding:5px; border-radius:7px">Fechado</p>
                         </div>

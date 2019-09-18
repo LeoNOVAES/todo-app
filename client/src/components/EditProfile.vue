@@ -9,7 +9,7 @@
 <template>
   <div>
     
-    <button @click="modalShow = !modalShow" class="btn btn-warning"  style="color:#ffffff; margin-left:10px">Editar</button>
+     <b-dropdown-item  @click="modalShow = true">Editar</b-dropdown-item>
     
     <b-modal title="Edite o Evento" v-model="modalShow" class="modal fade" hide-footer>
       <div>
@@ -19,11 +19,15 @@
             <input type="text" v-model="form.name" class="form-control"  placeholder="Nome">
           </div>
           <div class="form-group">
-            <label>Local</label>
-            <input type="text" v-model="form.local" class="form-control" placeholder="Local">
+            <label>Telefone</label>
+            <input type="number" v-model="form.phone" class="form-control" placeholder="Telefone">
+          </div>
+          <div class="form-group">
+            <label >Senha</label>
+            <input type="password" v-model="password" class="form-control" placeholder="Senha">
           </div>
           <div class="cardFooter">
-            <button @click="handlerUpdate" class="btn btn-success">Salvar</button>
+            <button @click="handlerEdit" class="btn btn-success">Salvar</button>
           </div>
       </form>
       </div>
@@ -41,36 +45,39 @@ import api from "@/services/api";
     data(){
         return{
           modalShow:false,
-          form:{
-            
-          },
-         
+          form:[],
+          password:""
         }
     },
-    mounted() {
-      this.getUsers();
+    mounted(){
+      this.getUser();
     },
     methods:{
-      async getUsers(){
-        
-        const response = await api.get("/event",{
+      async getUser(){
+        const response = await api.get("/user",{
           headers:{
             Authorization:localStorage.getItem("token_event"),
-            id:this.$props.idEvent
+            id:localStorage.getItem("id")
           }
         });
         
-        this.$data.form = response.data.event;
+        this.$data.form = response.data.user;
       },
 
-      async handlerUpdate(){
-        const response = await api.put("/event",this.$data.form,{
+      async handlerEdit(){
+
+        if(this.$data.password) this.$data.form.password = this.$data.password;
+
+        const response = await api.put("/user",this.$data.form,{
           headers:{
             Authorization:localStorage.getItem("token_event"),
-            id:this.$props.idEvent
+            id:localStorage.getItem("id")
           }
         });
-        console.log(response)
+        
+        if(this.$data.form.name){
+          localStorage.setItem("nome", this.$data.form.name);
+        }
         this.$data.modalShow = false;
         window.location.reload(true);
       }

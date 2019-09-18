@@ -40,8 +40,8 @@
                 <div class="col-sm-4 myEventsCard" v-for="(event, key) in events" :key="key">
                     <div class="card text-white bg-dark">
                         <div class="card-header headerCard">
-                            <p style="font-weight:bolder; font-size:150%">{{ event.name }}</p>
-                            <p v-if="state(event.end, event.start)" class="bg-success text-light" style="padding:5px; border-radius:7px">Aberto</p>
+                            <p style="font-weight:bolder; font-size:150%; width: 10em; word-wrap: break-word; ">{{ event.name }}</p>
+                            <p v-if="state(event.end, event.start)" class="bg-success text-light" style="padding:5px; border-radius:7px;">Aberto</p>
                             <p v-else class="bg-danger text-light" style="padding:5px; border-radius:7px">Fechado</p>
                         </div>
                         <div class="card-body">
@@ -49,12 +49,12 @@
                             <p> <b>Limite</b>: {{ event.limit }} </p>
                             <p> <b>Inicio</b>: {{ formatDate(event.start) }} </p>
                             <p> <b>Final</b>: {{ formatDate(event.end) }} </p>
-                            <p> <b>Convite</b>: {{ `http://localhost:3000/guests/${event._id}` }} </p>
+                            <p> <b>Convite</b>: {{ `http://localhost:8080/#/guests/${event._id}` }} </p>
                         </div>
                         <div class="footerCard">
                             <InfoEvent :idEvent="event._id"/>
                             <EditEvent :idEvent="event._id"/>
-                            <button  class="btn btn-danger">Excluir</button>
+                            <button @click="handlerDelete(event._id)" class="btn btn-danger">Excluir</button>
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@ export default{
             }
         },
 
-        async deleteEvent(id){
+        async handlerDelete(id){
             await api.delete('/event',{
                 headers:{
                     Authorization:localStorage.getItem("token_event"),

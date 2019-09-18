@@ -108,6 +108,7 @@ export default{
        },
 
        async handlerLogin(e,path){
+           e.preventDefault();
            if(!this.$data.formLog.password || !this.$data.formLog.email) return this.$data.validationLog = 1;
             try{
                 const response = await api.post("/auth",this.$data.formLog);

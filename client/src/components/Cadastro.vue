@@ -121,13 +121,11 @@ export default{
            }
        },
 
-       async handlerLogin(e){
-            e.preventDefault();
+       async handlerLogin(){
              const data = {
                 email:this.$data.form.email,
                 password:this.$data.form.password
             }
-    
             const response = await api.post("/auth", data);
             localStorage.setItem("token_event", response.data.token)
             localStorage.setItem("id", response.data.user._id);

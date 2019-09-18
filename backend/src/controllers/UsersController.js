@@ -75,7 +75,12 @@ module.exports = {
 
     async update(req,res) {
         const { id } = req.headers;
-        const user = await User.update({_id:id}, req.body);
+        const data = req.body;
+        if(data.password){
+            data.password = crypto.createHash("md5").update(data.password).digest("hex");
+        }
+
+        const user = await User.findOneAndUpdate({_id:id},data);
         return res.json({ user });
     },
 
