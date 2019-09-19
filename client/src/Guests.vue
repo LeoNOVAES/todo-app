@@ -4,7 +4,7 @@
     <div class="container-fluid banner">
         <div class="row content">
                 <div class="col-md-3 itemText">
-                    <h2>Voce foi convidado para Participar de um evento. Para confirmar sua participacao cadastre-se ou faca Login!</h2>
+                    <h2>você foi convidado para Participar de um evento. Para confirmar sua participação cadastre-se ou faça Login!</h2>
                 </div>
                 <div class="col-md-2 itemForm"> 
                     
