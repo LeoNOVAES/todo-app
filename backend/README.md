@@ -1,7 +1,8 @@
 # Docker
+Upload project along with database
 
-##Upload project along with database
-docker-compose up OR docker-compose up -d
+# -
+##docker-compose up OR docker-compose up -d
 
 # backend
 
