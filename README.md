@@ -5,6 +5,11 @@
 ##Upload project along with database
 docker-compose up OR docker-compose up -d
 
+#-
+
+##docker-compose up OR docker-compose up -d
+
+
 ## Project setup
 ## If you choose this option, you should set the connection server mongoose file
 
