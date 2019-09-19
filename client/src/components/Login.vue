@@ -87,7 +87,8 @@ export default{
        }    
    },
    methods:{
-       async handlerLogin(){
+       async handlerLogin(e){
+           e.preventDefault();
            if(!this.$data.form.password || !this.$data.form.email) return this.$data.validation = 1;
             
             try{
