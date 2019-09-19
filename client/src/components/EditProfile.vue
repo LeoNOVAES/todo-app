@@ -66,7 +66,7 @@ import api from "@/services/api";
 
       async handlerEdit(){
 
-        if(this.$data.password) this.$data.form.password = this.$data.password;
+        if(this.$data.password.length > 0) this.$data.form.password = this.$data.password;
 
         const response = await api.put("/user",this.$data.form,{
           headers:{
