@@ -11,7 +11,7 @@
     
      <b-dropdown-item  @click="modalShow = true">Editar</b-dropdown-item>
     
-    <b-modal title="Edite o Evento" v-model="modalShow" class="modal fade" hide-footer>
+    <b-modal title="Perfil" v-model="modalShow" class="modal fade" hide-footer>
       <div>
         <form>
           <div class="form-group">
