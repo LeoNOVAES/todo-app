@@ -53,7 +53,6 @@
                             <p> <b>Limite</b>: {{ event.limit }} </p>
                             <p> <b>Inicio</b>: {{ formatDate(event.start) }} </p>
                             <p> <b>Final</b>: {{ formatDate(event.end) }} </p>
-                            <p> <b>Convite</b>: {{ `http://localhost:3000/guests/${event._id}` }} </p>
                         </div>
                         <div class="footerCard">
                             <InfoEvent :idEvent="event._id"/>
