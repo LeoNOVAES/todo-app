@@ -73,14 +73,31 @@ module.exports = {
         res.status(200).json({ user });
     },
 
-    async update(req,res) {
+   async update(req,res) {
         const { id } = req.headers;
         const data = req.body;
+        let dataFinal;
+        
         if(data.password){
             data.password = crypto.createHash("md5").update(data.password).digest("hex");
         }
-
-        const user = await User.findOneAndUpdate({_id:id},data);
+        
+        if(data.password.length == 0){
+          const { name,phone } = req.body;
+          dataFinal = {
+            name,
+            phone
+          }
+        }else{
+          const { name,phone } = req.body;
+          dataFinal = {
+            name,
+            phone,
+            password
+          }
+        }
+        
+        const user = await User.findOneAndUpdate({_id:id},dataFinal);
         return res.json({ user });
     },
 
