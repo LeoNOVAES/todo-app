@@ -1,28 +1,34 @@
-import React, { useState } from 'react';
-import { Card, Button, Form, Navbar } from 'react-bootstrap';
+import React from 'react';
+import { Navbar, Dropdown } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'
 
 export default function Menu() {
 
     const history = useHistory();
 
-    const logout = (e) => {
-
+    const logout = () => {
+        localStorage.clear();
+        history.push('/');
     }
 
     return (
         <>
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="dark" variant="dark" className="d-flex justify-content-between">
                 <Navbar.Brand href="#home">
-                    {/* <img
-                        alt=""
-                        src="/logo.svg"
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                    />{' '} */}
-                TODO List
+                    TODO List
                 </Navbar.Brand>
+                <Dropdown
+                    className="mr-2"
+                    drop={'down'}
+                >
+                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                        { localStorage.getItem('username') }
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={()=>logout()}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Navbar>
         </>
     );

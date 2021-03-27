@@ -5,7 +5,7 @@ import Menu from './Menu';
 import http from '../utils/http'
 import Task from './Task';
 import ModalEditProject from './ModalEditProject';
-
+import swal from 'sweetalert';
 
 export default function Project() {
 
@@ -27,17 +27,47 @@ export default function Project() {
             setProjects(res.data.projects);
         })
         .catch(() => {
-
-        })
+            swal("Error!", "Unknown Error! :(", "error");
+        });
     }
 
-    const handlerCreateProject = (e) => {
+    const handlerCreateProject = () => {
         http.post('/project', project).then((res) => {
-            projects.push(res.data.project);
+            setProjects([ ...projects, res.data.project ]);
+            setProject({ title:'' });
+        })
+        .catch((e) => {
+            if(e.response.status === 409) {
+                swal("Error!", "Project already exists!", "error");
+            } else {
+                swal("Error!", "Error saving project! :(", "error");
+            }
+        });
+    }
+
+    const handlerUpdateProject = (id, title) => {
+        console.log('data -> ', id)
+        const body = {
+            title,
+            tasks: []
+        }
+
+        http.put(`/project/${id}`, body).then((res) => {
+            getProjects();
         })
         .catch(() => {
+            swal("Error!", "Error updating project! :(", "error");
+        });
+    }
 
+    const handlerDeleteProject = (id) => {
+        http.delete(`/project/${id}`).then((res) => {
+            console.log('resz-.', res)
+            setProjects(projects.filter((p) => p._id !== id));
         })
+        .catch(() => {
+            swal("Error!", "Error deleting project! :(", "error");
+        });
     }
 
     return (
@@ -54,11 +84,18 @@ export default function Project() {
                         <Form.Control
                             type="text"
                             placeholder="Name"
+                            value={project.title}
                             onChange={(e) => setProject({title:e.target.value})}
                         />
                     </Form.Group>
                     <div class="d-flex justify-content-end">
-                        <Button variant="primary" onClick={(e) => handlerCreateProject(e)}>Save</Button>
+                        <Button 
+                            variant="primary" 
+                            onClick={(e) => handlerCreateProject(e)}
+                            disabled={!project.title}
+                        >
+                            Save
+                        </Button>
                     </div>
                 </Form>
             </Jumbotron>
@@ -66,12 +103,12 @@ export default function Project() {
                 <div className="row ml-3">
                     {
                         projects.map((project) => (
-                            <div key={project._id} className="col-md-4">
+                            <div key={project._id} className="col-md-4 mt-3 mb-5">
                                 <Task 
                                     project={project}
-                                    tasks={project.tasks}
                                     setCurrentProject={setCurrentProject}
                                     showModalProject={handleShow}
+                                    handlerDeleteProject={handlerDeleteProject}
                                 />
                             </div>
                         ))
@@ -82,6 +119,8 @@ export default function Project() {
                 project={currentProject}
                 show={show}
                 handleClose={handleClose}
+                setProject={setProject}
+                handlerUpdateProject={handlerUpdateProject}
             />
         </>
     );

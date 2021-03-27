@@ -17,17 +17,20 @@ module.exports = {
             if (exists) return res.status(409).json({ message: "Project already exists!" });
 
             const project = await Project.create({ title, owner: userId });
-            await Promise.all(tasks.map(async (task) => {
-                // END CANNOT BEFORE START 
-                if (!validateDateStartEnd(task.start, task.end)) {
-                    return;
-                }
 
-                const projectTask = new Task({ ...task, project: project._id });
-                await projectTask.save();
-                project.tasks.push(projectTask);
-            }));
-
+            if(tasks && tasks.length) {
+                await Promise.all(tasks.map(async (task) => {
+                    // END CANNOT BEFORE START 
+                    if (!validateDateStartEnd(task.start, task.end)) {
+                        return;
+                    }
+    
+                    const projectTask = new Task({ ...task, project: project._id });
+                    await projectTask.save();
+                    project.tasks.push(projectTask);
+                }));
+            }
+            
             await project.save();
             return res.status(200).json({ project });
         } catch (e) {
@@ -88,8 +91,11 @@ module.exports = {
     async delete(req, res, next) {
         try {
             const { id } = req.params;
-            await Task.remove({ project: id });
+
             await Project.findOneAndRemove({ _id: id });
+
+            await Task.remove({ project: id });
+
             return res.status(200).json({ message: "Project deleted successfully!" });
         } catch (e) {
             console.log(e);

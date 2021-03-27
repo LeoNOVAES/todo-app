@@ -54,8 +54,7 @@ module.exports = {
     },
 
     async index(req, res) {
-        const { id } = req.params;
-        const user = await User.findById(id);
+        const user = await User.findById(req.userId);
         res.status(200).json({ user });
     },
 }

@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import {  Button, Form,  Modal } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom'
-import http from '../utils/http'
+import { Button, Form, Modal } from 'react-bootstrap';
+import moment from "moment";
 
 export default function ModalAddTask(props) {
 
-    const history = useHistory();
     const [task, setTask] = useState(props.task || {});
     const [invalid, setInvalid] = useState(false);
 
     useEffect(() => {
-        props.task ? setTask(props.task): setTask({});
-        
-      }, [props.task]);
+        if(props.task)
+            setTask(props.task);
+    }, [props.task])
+
+    const createOrUpdateTask = () => {
+
+        if(!task.start || !task.end || !task.description || !task.title) {
+            setInvalid(true);
+            return;
+        }
+
+        task._id ? props.handlerUpdateTask(task) : props.handlerCreateTask(task);
+        setTask({});
+        setInvalid(false);
+        props.handleClose();
+    }
 
     return (
         <>
@@ -30,21 +41,34 @@ export default function ModalAddTask(props) {
                                 type="text"
                                 placeholder="Title"
                                 value={task.title}
-                                // onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                onChange={(e) => setTask({ ...task, title: e.target.value })}
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="formBasicEmail">
+                        <Form.Group controlId="edit">
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" rows={3} />
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={task.description}
+                                onChange={(e) => setTask({ ...task, description: e.target.value })}
+                            />
                         </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
+                        <Form.Group controlId="edit">
                             <Form.Label>Date Start</Form.Label>
-                            <Form.Control type="date" />
+                            <Form.Control
+                                type="date"
+                                value={task.start ? moment(task.start).format('YYYY-MM-DD') : null}
+                                onChange={(e) => setTask({ ...task, start: e.target.value })}
+                            />
                         </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
+                        <Form.Group controlId="edit">
                             <Form.Label>Date End</Form.Label>
-                            <Form.Control type="date" />
+                            <Form.Control
+                                type="date"
+                                value={task.end ? moment(task.end).format('YYYY-MM-DD') : null}
+                                onChange={(e) => setTask({ ...task, end: moment(e.target.value) })}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -52,7 +76,11 @@ export default function ModalAddTask(props) {
                     <Button variant="secondary" onClick={props.handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={props.handleClose}>
+                    <Button 
+                        variant="primary" 
+                        onClick={() => createOrUpdateTask()}
+                        disabled={!task.start || !task.end || !task.description || !task.title}
+                    >
                         Save
                     </Button>
                 </Modal.Footer>

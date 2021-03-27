@@ -19,12 +19,14 @@ module.exports = {
                 throw new Error();
             }
 
-            const task = await Task.create(data);
+            const projectTask = await Project.findOne({ _id: data.project });
+            if(!projectTask) {
+                throw new Error();
+            }
 
-            const projectTask = await Project.findOne({ _id: task.project });
+            const task = await Task.create(data);
             projectTask.tasks.push(task);
             await projectTask.save();
-
             return res.status(200).json({ task });
         } catch (e) {
             console.log(e);
@@ -53,6 +55,20 @@ module.exports = {
             console.log(e);
             e.httpStatusCode = 400;
             e.responseMessage = 'Error updating task!';
+            next(e);
+        }
+    },
+
+    async indexByProject(req, res, next) {
+        try {
+            const { project } = req.params;
+            const tasksDone = await Task.find({ project, done: true });
+            const tasksNotDone = await Task.find({ project, done: false });
+            return res.json({ tasksDone, tasksNotDone });
+        } catch (e) {
+            console.log(e);
+            e.httpStatusCode = 400;
+            e.responseMessage = 'Error getting tasks!';
             next(e);
         }
     },
