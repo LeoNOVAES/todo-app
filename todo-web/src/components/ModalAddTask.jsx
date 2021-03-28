@@ -22,12 +22,12 @@ export default function ModalAddTask(props) {
         task._id ? props.handlerUpdateTask(task) : props.handlerCreateTask(task);
         setTask({});
         setInvalid(false);
-        props.handleClose();
+        props.handleClose(props.setShow);
     }
 
     return (
         <>
-            <Modal show={props.show} onHide={props.handleClose}>
+            <Modal show={props.show} onHide={() => props.handleClose(props.setShow)}>
                 <Modal.Body>
                     <Form style={{ width: '100%', padding: '20px' }}>
                         {
@@ -73,7 +73,7 @@ export default function ModalAddTask(props) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={props.handleClose}>
+                    <Button variant="secondary" onClick={() => props.handleClose(props.setShow)}>
                         Close
                     </Button>
                     <Button 

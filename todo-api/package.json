@@ -4,7 +4,8 @@
   "description": "",
   "main": "start.js",
   "scripts": {
-    "start": "nodemon server",
+    "start": "node start.js",
+    "dev": "nodemon server",
     "test": "NODE_ENV=test jest"
   },
   "keywords": [],

@@ -41,7 +41,7 @@ export default function Project() {
         })
             .catch((e) => {
                 setLoading(false);
-
+                
                 if (e.response.status === 409) {
                     swal("Error!", "Project already exists!", "error");
                 } else {
