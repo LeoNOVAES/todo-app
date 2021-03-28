@@ -1,60 +1,23 @@
-#link
-http://149.56.185.80:8080
 
-# SERVER
+## Available Scripts
 
-##Docker 
+In the project directory, you can run:
 
-##Upload project along with database
-docker-compose up OR docker-compose up -d
+### `docker-compose build`
+### `docker-compose up -d`
 
-#-
-
-##docker-compose up OR docker-compose up -d
-
-
-## Project setup
-## If you choose this option, you should set the connection server mongoose file
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm start
-```
----------------------------------------------------------------------------------------------------------
-# CLIENTE
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Runs the app in the development mode.<br />
+ [http://localhost:3001]: this route will be rotating the frontend in react
+ [http://localhost:3000]: this route will be rotating the backend in nodejs
+ [http://localhost:27019]: this route will be rotating the database in mongodb
 
 
+## OBS
 
+for creating the .env file in the all-api folder with the following argument
+JWT_SECRET=someexmaplejwtkey
 
+<!-- ### `yarn test`
+
+Launches the test runner in the interactive watch mode.<br />
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information. -->

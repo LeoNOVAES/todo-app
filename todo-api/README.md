@@ -1,22 +1,17 @@
-# Docker
-Upload project along with database
 
-# -
-##docker-compose up OR docker-compose up -d
+## Available Scripts
 
-# backend
+In the project directory, you can run:
 
-## Project setup
-## If you choose this option, you should set the connection server mongoose file
+### `docker-compose build`
+### `docker-compose up -d`
 
-```
-npm install
-```
+Runs the app in the development mode.<br />
+ [http://localhost:3001]: this route will be rotating the frontend in react
+ [http://localhost:3000]: this route will be rotating the backend in nodejs
+ [http://localhost:27019]: this route will be rotating the database in mongodb
 
-### Compiles and hot-reloads for development
-```
-npm start
-```
+<!-- ### `yarn test`
 
-
-
+Launches the test runner in the interactive watch mode.<br />
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information. -->
