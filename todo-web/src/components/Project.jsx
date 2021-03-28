@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import {  Button, Form, Jumbotron } from 'react-bootstrap';
+import { Button, Form, Jumbotron } from 'react-bootstrap';
 import http from '../utils/http'
 import Task from './Task';
 import ModalEditProject from './ModalEditProject';
 import swal from 'sweetalert';
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function Project() {
 
     const [project, setProject] = useState({});
     const [invalid, setInvalid] = useState(false);
     const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [currentProject, setCurrentProject] = useState(false);
     const [show, setShow] = useState(false);
 
@@ -24,23 +27,27 @@ export default function Project() {
         http.get('/projects').then((res) => {
             setProjects(res.data.projects);
         })
-        .catch(() => {
-            swal("Error!", "Unknown Error! :(", "error");
-        });
+            .catch(() => {
+                swal("Error!", "Unknown Error! :(", "error");
+            });
     }
 
     const handlerCreateProject = () => {
+        setLoading(true);
         http.post('/project', project).then((res) => {
-            setProjects([ ...projects, res.data.project ]);
-            setProject({ title:'' });
+            setProjects([...projects, res.data.project]);
+            setProject({ title: '' });
+            setLoading(false);
         })
-        .catch((e) => {
-            if(e.response.status === 409) {
-                swal("Error!", "Project already exists!", "error");
-            } else {
-                swal("Error!", "Error saving project! :(", "error");
-            }
-        });
+            .catch((e) => {
+                setLoading(false);
+
+                if (e.response.status === 409) {
+                    swal("Error!", "Project already exists!", "error");
+                } else {
+                    swal("Error!", "Error saving project! :(", "error");
+                }
+            });
     }
 
     const handlerUpdateProject = (id, title) => {
@@ -53,9 +60,9 @@ export default function Project() {
         http.put(`/project/${id}`, body).then((res) => {
             getProjects();
         })
-        .catch(() => {
-            swal("Error!", "Error updating project! :(", "error");
-        });
+            .catch(() => {
+                swal("Error!", "Error updating project! :(", "error");
+            });
     }
 
     const handlerDeleteProject = (id) => {
@@ -63,9 +70,9 @@ export default function Project() {
             console.log('resz-.', res)
             setProjects(projects.filter((p) => p._id !== id));
         })
-        .catch(() => {
-            swal("Error!", "Error deleting project! :(", "error");
-        });
+            .catch(() => {
+                swal("Error!", "Error deleting project! :(", "error");
+            });
     }
 
     return (
@@ -83,16 +90,21 @@ export default function Project() {
                             type="text"
                             placeholder="Name"
                             value={project.title}
-                            onChange={(e) => setProject({title:e.target.value})}
+                            onChange={(e) => setProject({ title: e.target.value })}
                         />
                     </Form.Group>
                     <div className="d-flex justify-content-end">
-                        <Button 
-                            variant="primary" 
+                        <Button
+                            variant="primary"
                             onClick={(e) => handlerCreateProject(e)}
                             disabled={!project.title}
                         >
-                            Save
+                            {
+                                loading ?
+                                    <ClipLoader color={'white'} size={10} />
+                                    :
+                                    <span>Save</span>
+                            }
                         </Button>
                     </div>
                 </Form>
@@ -102,7 +114,7 @@ export default function Project() {
                     {
                         projects.map((project) => (
                             <div key={project._id} className="col-md-4 mt-3 mb-5">
-                                <Task 
+                                <Task
                                     project={project}
                                     setCurrentProject={setCurrentProject}
                                     showModalProject={handleShow}

@@ -55,8 +55,12 @@ export default function Task(props) {
         http.post('/task', newTask).then((res) => {
            setTasksNotDone([...tasksNotDone, res.data.task]);
         })
-        .catch(() => {
-            swal("Error!", "Error saving task! :(", "error");
+        .catch((e) => {
+            if(e.response.status === 409) {
+                swal("Error!", "Task already exists!", "error");
+            } else {
+                swal("Error!", "Error saving task! :(", "error");
+            }
         });
     }
 

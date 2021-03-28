@@ -3,26 +3,34 @@ import { Card, Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'
 import http from '../utils/http'
 import swal from 'sweetalert';
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Login() {
 
     const history = useHistory();
-    const [form, setForm] = useState({ email: '', password: '', name:'' });
+    const [form, setForm] = useState({ email: '', password: '', name: '' });
     const [screen, setScreen] = useState('login');
     const [invalid, setInvalid] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const registerUser = (e) => {
         e.preventDefault();
+        setLoading(true);
+
         if (!form.email || !form.password || !form.name) {
             setInvalid(true);
+            setLoading(false);
+            return;
         }
 
         http.post('/user', form).then((res) => {
+            setLoading(false);
             login(e);
         })
-        .catch(() => {
-            swal("Error!", "User already exists!", "error");
-        })
+            .catch(() => {
+                setLoading(false);
+                swal("Error!", "User already exists!", "error");
+            })
     }
 
     const login = (e) => {
@@ -37,9 +45,9 @@ export default function Login() {
             localStorage.setItem('username', res.data.user.name);
             history.push('/');
         })
-        .catch(() => {
-            swal("Error!", "Wrong email or password!", "error");
-        })
+            .catch(() => {
+                swal("Error!", "Wrong email or password!", "error");
+            })
     }
 
     return (
@@ -88,20 +96,35 @@ export default function Login() {
                         screen !== 'login' ?
                             (
                                 <div className="d-flex justify-content-between">
-                                    <Button variant="link" onClick={()=> setScreen('login')}>back to login, click here</Button>
-                                    <Button variant="primary" onClick={(e) => registerUser(e)}>Save</Button>
+                                    <Button variant="link" onClick={() => setScreen('login')}>back to login, click here</Button>
+                                    <Button
+                                        variant="primary"
+                                        onClick={(e) => registerUser(e)}
+                                    >
+                                        {
+                                            loading ?
+                                                <ClipLoader color={'white'} size={10} />
+                                                :
+                                                <span>Save</span>
+                                        }
+                                    </Button>
                                 </div>
                             )
                             :
                             (
                                 <div className="d-flex justify-content-between">
-                                    <Button variant="link" onClick={()=> setScreen('register')}>Don't have a registration yet? Click here</Button>
-                                    <Button 
-                                        variant="primary" 
+                                    <Button variant="link" onClick={() => setScreen('register')}>Don't have a registration yet? Click here</Button>
+                                    <Button
+                                        variant="primary"
                                         onClick={(e) => login(e)}
                                         disabled={!form.email || !form.password}
-                                        >
-                                            Log In
+                                    >
+                                        {
+                                            loading ?
+                                                <ClipLoader color={'white'} size={10} />
+                                                :
+                                                <span>Log In</span>
+                                        }
                                     </Button>
                                 </div>
                             )
