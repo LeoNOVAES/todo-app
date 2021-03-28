@@ -3,15 +3,16 @@
 
 In the project directory, you can run:
 
-### `docker-compose build`
-### `docker-compose up -d`
 
-Runs the app in the development mode.<br />
- [http://localhost:3001]: this route will be rotating the frontend in react
- [http://localhost:3000]: this route will be rotating the backend in nodejs
- [http://localhost:27019]: this route will be rotating the database in mongodb
+### `npm install`
+install dependencies
 
-<!-- ### `yarn test`
+### `npm start`
+run the project
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information. -->
+### `npm test`
+
+Tests will run based on jest
+for creating the .env.test file in the todo-api folder with the following arguments
+JWT_SECRET=someexmaplejwtkey
+DB_URL = mongodb://localhost:27017/todo_test

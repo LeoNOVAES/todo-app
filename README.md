@@ -15,10 +15,5 @@ Runs the app in the development mode.<br />
 
 ## OBS
 
-for creating the .env file in the all-api folder with the following argument
+for creating the .env file in the todo-api folder with the following argument
 JWT_SECRET=someexmaplejwtkey
-
-<!-- ### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information. -->

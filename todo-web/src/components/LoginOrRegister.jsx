@@ -35,17 +35,22 @@ export default function Login() {
 
     const login = (e) => {
         e.preventDefault();
+        setLoading(true);
+
         if (!form.email || !form.password) {
             setInvalid(true);
+            setLoading(false);
             return;
         }
 
         http.post('/auth', form).then((res) => {
             localStorage.setItem('token_todo', res.data.token);
             localStorage.setItem('username', res.data.user.name);
+            setLoading(false);
             history.push('/');
         })
             .catch(() => {
+                setLoading(false);
                 swal("Error!", "Wrong email or password!", "error");
             })
     }

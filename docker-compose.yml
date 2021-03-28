@@ -4,6 +4,9 @@ services:
   api:
     build: ./todo-api
     command: npm start
+    environment:
+      JWT_SECRET: rickandmortyeumacopiadedoctorwho
+      DB_URL: mongodb://db:27017/todo
     ports:
       - "3000:3000"
     volumes:
