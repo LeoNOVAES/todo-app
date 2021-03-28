@@ -1,4 +1,3 @@
-# todo-app
 
 ## Available Scripts
 
@@ -11,12 +10,6 @@ Runs the app in the development mode.<br />
  [http://localhost:3001]: this route will be rotating the frontend in react
  [http://localhost:3000]: this route will be rotating the backend in nodejs
  [http://localhost:27019]: this route will be rotating the database in mongodb
-
-
-## OBS
-
-for creating the .env file in the all-api folder with the following argument
-JWT_SECRET=someexmaplejwtkey
 
 <!-- ### `yarn test`
 
