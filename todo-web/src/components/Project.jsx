@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Form, Jumbotron } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom'
-import Menu from './Menu';
+import {  Button, Form, Jumbotron } from 'react-bootstrap';
 import http from '../utils/http'
 import Task from './Task';
 import ModalEditProject from './ModalEditProject';
@@ -88,7 +86,7 @@ export default function Project() {
                             onChange={(e) => setProject({title:e.target.value})}
                         />
                     </Form.Group>
-                    <div class="d-flex justify-content-end">
+                    <div className="d-flex justify-content-end">
                         <Button 
                             variant="primary" 
                             onClick={(e) => handlerCreateProject(e)}

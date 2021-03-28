@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom'
 import http from '../utils/http'
 import { Create, DeleteForever } from '@material-ui/icons';
 import ModalAddTask from './ModalAddTask';
@@ -9,8 +8,6 @@ import swal from 'sweetalert';
 
 export default function Task(props) {
 
-    const history = useHistory();
-    const [projectName, setProjectName] = useState(null);
     const [currentTask, setCurrentTask] = useState(false);
     const [tasksDone, setTasksDone] = useState([]);
     const [tasksNotDone, setTasksNotDone] = useState([]);
