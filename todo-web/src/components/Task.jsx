@@ -5,6 +5,7 @@ import { Create, DeleteForever, OpenInNew } from '@material-ui/icons';
 import ModalAddTask from './ModalAddTask';
 import ModalTaskDetails from './ModalTaskDetails';
 import moment from 'moment';
+import formatterEl from '../utils/elipsis';
 import swal from 'sweetalert';
 
 export default function Task(props) {
@@ -16,7 +17,11 @@ export default function Task(props) {
     const [showDetails, setShowDetails] = useState(false);
 
 
-    const handleClose = (modal) => modal(false);
+    const handleClose = (modal) => {
+        modal(false)
+        setCurrentTask({})
+    };
+
     const handleShow = (modal) => modal(true);
 
     useEffect(() => {
@@ -110,7 +115,17 @@ export default function Task(props) {
         <>
             <div className="card bg-dark" style={{ width: '20rem' }}>
                 <div className="card-header text-white d-flex justify-content-between">
-                    <p className="m-0">{props.project.title}</p>
+                    <OverlayTrigger
+                        key={props.project.title}
+                        placement={'top'}
+                        overlay={
+                            <Tooltip id={`tooltip-${props.project.title}`}>
+                                {props.project.title}
+                            </Tooltip>
+                        }
+                    >
+                        <p className="m-0">{formatterEl(props.project.title, 25)}</p>
+                    </OverlayTrigger>
                     <div>
                         <Create
                             style={{ fontSize: '14pt', cursor: 'pointer' }}
@@ -153,7 +168,7 @@ export default function Task(props) {
                                                 for={task._id}
                                                 style={{ fontSize: '8pt', margin: 0 }}
                                             >
-                                                {task.title}
+                                                {formatterEl(task.title, 25)}
                                             </label>
                                         </div>
                                         <div>
@@ -205,7 +220,7 @@ export default function Task(props) {
                                         </Tooltip>
                                     }
                                 >
-                                    <li className="list-group-item d-flex justify-content-start" key={task._id}>
+                                    <li className="list-group-item d-flex justify-content-between" key={task._id}>
                                         <div className="ml-2">
                                             <input type="checkbox" className="form-check-input" id={task._id} checked />
                                             <label
@@ -214,6 +229,15 @@ export default function Task(props) {
                                             >
                                                 {task.title}
                                             </label>
+                                        </div>
+                                        <div>
+                                            <OpenInNew
+                                                style={{ fontSize: '14pt', cursor: 'pointer' }}
+                                                onClick={() => {
+                                                    handleShow(setShowDetails);
+                                                    setCurrentTask(task);
+                                                }}
+                                            />
                                         </div>
                                     </li>
                                 </OverlayTrigger>
@@ -230,8 +254,8 @@ export default function Task(props) {
                             className="btn btn-success"
                             style={{ width: '100%' }}
                             onClick={() => {
+                                setCurrentTask({});
                                 handleShow(setShow);
-                                setCurrentTask(null);
                             }}
                         >
                             add a new task

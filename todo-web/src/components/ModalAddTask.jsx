@@ -8,8 +8,9 @@ export default function ModalAddTask(props) {
     const [invalid, setInvalid] = useState(false);
 
     useEffect(() => {
-        if(props.task)
+        if(props.task){
             setTask(props.task);
+        }
     }, [props.task])
 
     const createOrUpdateTask = () => {
