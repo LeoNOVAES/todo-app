@@ -1,19 +1,28 @@
 version: "3"
 
 services:
-  app:
-    build: ./docker/node/
+  api:
+    build: ./todo-api
     command: npm start
     ports:
       - "3000:3000"
     volumes:
       - ./:/usr/app
     links:
-      - db    
+      - db  
   db:
     image: mongo
     container_name: mongodb
     ports:
       - "27019:27017"
     volumes:
-      - /data/db:/data/db  
+      - /data/db:/data/db
+  web:
+    build: ./todo-web
+    command: npm start
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./:/usr/app
+    links:
+      - db  
