@@ -4,6 +4,9 @@ const userMock = {
     "email": "ghandalf@gmail.com"
 }
 
+let token = '';
+
 module.exports = {
-    userMock
+    userMock,
+    token
 }
